@@ -11,6 +11,7 @@ CREATE TABLE products (
   category TEXT,
   default_price TEXT
 );
+ALTER SEQUENCE products_product_id_seq RESTART WITH 17067;
 
 CREATE TABLE features (
   feature_id SERIAL PRIMARY KEY,
