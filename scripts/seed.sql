@@ -3,22 +3,6 @@ CREATE DATABASE atelierproducts;
 
 \c atelierproducts;
 
--- for transforming
-CREATE TEMPORARY TABLE temp_products (
-  product_id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  slogan TEXT,
-  description TEXT,
-  category TEXT,
-  default_price TEXT
-);
--- load all columns into a temportary table
-COPY temp_products (product_id, name, slogan, description, category, default_price)
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/product.csv'
-delimiter ','
-csv header;
-
-
 CREATE TABLE products (
   product_id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -27,13 +11,10 @@ CREATE TABLE products (
   category TEXT,
   default_price TEXT
 );
--- start product_id at 17067 instead of 1
-ALTER SEQUENCE products_product_id_seq RESTART WITH 17067;
--- load all but the product_id into table
-INSERT INTO products (name, slogan, description, category, default_price)
-  SELECT name, slogan, description, category, default_price
-  FROM temp_products;
-DROP TABLE temp_products;
+COPY products (product_id, name, slogan, description, category, default_price)
+FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/product.csv'
+delimiter ','
+csv header;
 
 
 CREATE TABLE features (
