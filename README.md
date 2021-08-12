@@ -17,3 +17,11 @@ PRs welcome! Please read the [contributing docs](CONTRIBUTING.md) before startin
     # WARNING: this will erase an data stored in the database
     npm run build-db
     ```
+
+1. use the CLI view
+
+    ```
+    $ sudo -u postgres psql
+    postgres=# \c atelierproducts
+    postgres=# \d+
+    ```
