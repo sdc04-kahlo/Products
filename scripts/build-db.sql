@@ -4,7 +4,7 @@ CREATE DATABASE atelierproducts;
 \c atelierproducts;
 
 CREATE TABLE products (
-  id SERIAL PRIMARY KEY,
+  product_id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   slogan TEXT,
   description TEXT,
@@ -13,15 +13,15 @@ CREATE TABLE products (
 );
 
 CREATE TABLE features (
-  id SERIAL PRIMARY KEY,
-  product_id INTEGER NOT NULL,
+  feature_id SERIAL PRIMARY KEY,
+  product_id INT REFERENCES products,
   feature TEXT NOT NULL,
   value TEXT NOT NULL
 );
 
 CREATE TABLE styles (
-  id SERIAL PRIMARY KEY,
-  product_id INTEGER NOT NULL,
+  style_id SERIAL PRIMARY KEY,
+  product_id INT REFERENCES products,
   name TEXT NOT NULL,
   sale_price TEXT,
   original_price TEXT,
@@ -29,21 +29,21 @@ CREATE TABLE styles (
 );
 
 CREATE TABLE photos (
-  id SERIAL PRIMARY KEY,
-  style_id INTEGER NOT NULL,
+  photo_id SERIAL PRIMARY KEY,
+  style_id INT REFERENCES styles,
   url TEXT NOT NULL,
   thumbnail_url TEXT
 );
 
 CREATE TABLE skus (
-  id SERIAL PRIMARY KEY,
-  style_id INTEGER NOT NULL,
+  sku_id SERIAL PRIMARY KEY,
+  style_id INT REFERENCES styles,
   size TEXT NOT NULL,
   quantity TEXT NOT NULL
 );
 
 CREATE TABLE related (
-  id SERIAL PRIMARY KEY,
-  current_product_id INTEGER NOT NULL,
-  related_product_id INTEGER NOT NULL
+  realted_id SERIAL PRIMARY KEY,
+  current_product_id INT,
+  related_product_id INT
 );
