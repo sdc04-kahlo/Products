@@ -6,7 +6,8 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server:dev": "nodemon server/index.js",
+    "start:dev": "nodemon server/index.js",
+    "start:prod": "node server/index.js",
     "seed": "sudo -u postgres psql < scripts/seed.sql"
   },
   "repository": {
