@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
 import express from 'express';
+import Client from 'pg';
 
+dotenv.config();
 const app = express();
-const port = 3000;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -24,6 +26,6 @@ app.get('/products/:product_id/related', (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening at http://localhost:${process.env.PORT}`);
 });
