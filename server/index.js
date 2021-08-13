@@ -7,13 +7,17 @@ const app = express();
 
 // connect to database
 const client = new Client();
+client.connect();
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 app.get('/products', (req, res) => {
-  res.json('hello from products');
+  client
+    .query('SELECT * FROM products LIMIT 5')
+    .then((results) => res.json(results.rows))
+    .catch((e) => console.log(e));
 });
 
 app.get('/products/:product_id', (req, res) => {
@@ -27,7 +31,6 @@ app.get('/products/:product_id/styles', (req, res) => {
 app.get('/products/:product_id/related', (req, res) => {
   res.json(req.params);
 });
-
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`);

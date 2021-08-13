@@ -1,8 +1,15 @@
+-- create database
 DROP DATABASE atelierproducts;
 CREATE DATABASE atelierproducts;
 
+-- create role
+DROP ROLE api;
+CREATE ROLE api LOGIN PASSWORD 'apipassword';
+
+-- connect to database
 \c atelierproducts;
 
+-- create table
 CREATE TABLE products (
   product_id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -11,10 +18,14 @@ CREATE TABLE products (
   category TEXT,
   default_price TEXT
 );
+
+-- load from CSV extract
 COPY products (product_id, name, slogan, description, category, default_price)
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/product.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/product.csv'
+  DELIMITER ',' CSV HEADER;
+
+-- grant api permission to access table
+GRANT ALL ON products TO api;
 
 
 CREATE TABLE features (
@@ -23,10 +34,12 @@ CREATE TABLE features (
   feature TEXT NOT NULL,
   value TEXT NOT NULL
 );
+
 COPY features
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/features.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/features.csv'
+  DELIMITER ',' CSV HEADER;
+
+GRANT ALL ON features TO api;
 
 
 CREATE TABLE styles (
@@ -37,10 +50,12 @@ CREATE TABLE styles (
   original_price TEXT,
   default_style BOOLEAN
 );
+
 COPY styles
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/styles.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/styles.csv'
+  DELIMITER ',' CSV HEADER;
+
+GRANT ALL ON styles TO api;
 
 
 CREATE TABLE photos (
@@ -49,10 +64,12 @@ CREATE TABLE photos (
   url TEXT NOT NULL,
   thumbnail_url TEXT
 );
+
 COPY photos
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/photos.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/photos.csv'
+  DELIMITER ',' CSV HEADER;
+
+GRANT ALL ON photos TO api;
 
 
 CREATE TABLE skus (
@@ -61,10 +78,12 @@ CREATE TABLE skus (
   size TEXT NOT NULL,
   quantity TEXT NOT NULL
 );
+
 COPY skus
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/skus.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/skus.csv'
+  DELIMITER ',' CSV HEADER;
+
+GRANT ALL ON skus TO api;
 
 
 CREATE TABLE related (
@@ -72,7 +91,10 @@ CREATE TABLE related (
   current_product_id INT,
   related_product_id INT
 );
+
 COPY related
-FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/related.csv'
-delimiter ','
-csv header;
+  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/related.csv'
+  DELIMITER ',' CSV HEADER;
+
+GRANT ALL ON related TO api;
+
