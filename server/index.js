@@ -23,11 +23,15 @@ app.get('/products', (req, res) => {
 });
 
 app.get('/products/:product_id', (req, res) => {
-  const queryString = `select p.product_id, p.name, f.feature, f.value from products p inner join features f
-  on f.product_id = p.product_id
-  where p.product_id=1;`;
+  const text = `
+    SELECT p.product_id, p.name, f.feature, f.value
+    FROM products p INNER JOIN features f
+    ON f.product_id = p.product_id
+    WHERE p.product_id=$1;
+  `;
+  const values = [req.params.product_id];
   client
-    .query(queryString)
+    .query(text, values)
     .then((results) => res.json(results.rows))
     .catch((e) => console.log(e));
 });
