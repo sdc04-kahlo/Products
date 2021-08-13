@@ -21,7 +21,13 @@ app.get('/products', (req, res) => {
 });
 
 app.get('/products/:product_id', (req, res) => {
-  res.json(req.params);
+  const queryString = `select p.product_id, p.name, f.feature, f.value from products p inner join features f
+  on f.product_id = p.product_id
+  where p.product_id=1;`;
+  client
+    .query(queryString)
+    .then((results) => res.json(results.rows))
+    .catch((e) => console.log(e));
 });
 
 app.get('/products/:product_id/styles', (req, res) => {

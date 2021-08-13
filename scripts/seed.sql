@@ -4,6 +4,7 @@ CREATE DATABASE atelierproducts;
 
 -- create role
 DROP ROLE api;
+-- TODO: replace with a secure password
 CREATE ROLE api LOGIN PASSWORD 'apipassword';
 
 -- connect to database
