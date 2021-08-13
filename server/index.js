@@ -1,9 +1,12 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import Client from 'pg';
+const dotenv = require('dotenv');
+const express = require('express');
+const { Client } = require('pg');
 
 dotenv.config();
 const app = express();
+
+// connect to database
+const client = new Client();
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
