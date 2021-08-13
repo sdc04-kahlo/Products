@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const morgan = require('morgan');
 const { Client } = require('pg');
 
 dotenv.config();
 const app = express();
+app.use(morgan('dev'));
 
 // connect to database
 const client = new Client();
