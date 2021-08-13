@@ -1,4 +1,4 @@
 node_modules
 *.pem
-csv-extracts
+csv-full
 .env

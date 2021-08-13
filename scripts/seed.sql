@@ -2,13 +2,13 @@
 DROP DATABASE atelierproducts;
 CREATE DATABASE atelierproducts;
 
+-- connect to database
+\c atelierproducts;
+
 -- create role
 DROP ROLE api;
 -- TODO: replace with a secure password
 CREATE ROLE api LOGIN PASSWORD 'apipassword';
-
--- connect to database
-\c atelierproducts;
 
 -- create table
 CREATE TABLE products (
@@ -22,7 +22,7 @@ CREATE TABLE products (
 
 -- load from CSV extract
 COPY products (product_id, name, slogan, description, category, default_price)
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/product.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/product.csv'
   DELIMITER ',' CSV HEADER;
 
 -- grant api permission to access table
@@ -37,7 +37,7 @@ CREATE TABLE features (
 );
 
 COPY features
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/features.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/features.csv'
   DELIMITER ',' CSV HEADER;
 
 GRANT ALL ON features TO api;
@@ -53,7 +53,7 @@ CREATE TABLE styles (
 );
 
 COPY styles
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/styles.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/styles.csv'
   DELIMITER ',' CSV HEADER;
 
 GRANT ALL ON styles TO api;
@@ -67,7 +67,7 @@ CREATE TABLE photos (
 );
 
 COPY photos
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/photos.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/photos.csv'
   DELIMITER ',' CSV HEADER;
 
 GRANT ALL ON photos TO api;
@@ -81,7 +81,7 @@ CREATE TABLE skus (
 );
 
 COPY skus
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/skus.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/skus.csv'
   DELIMITER ',' CSV HEADER;
 
 GRANT ALL ON skus TO api;
@@ -94,7 +94,7 @@ CREATE TABLE related (
 );
 
 COPY related
-  FROM '/home/mc_heindel/HackReactor/Products/csv-extracts/small/related.csv'
+  FROM '/home/mc_heindel/HackReactor/Products/csv-small/related.csv'
   DELIMITER ',' CSV HEADER;
 
 GRANT ALL ON related TO api;
