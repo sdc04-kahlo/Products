@@ -1,0 +1,33 @@
+{
+  "name": "products",
+  "version": "1.0.0",
+  "description": "Server for hosting the Atelier Products API and database",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "nodemon server/index.js",
+    "seed": "sudo -u postgres psql < scripts/seed.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdc04-kahlo/Products.git"
+  },
+  "author": "Matt Heindel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdc04-kahlo/Products/issues"
+  },
+  "homepage": "https://github.com/sdc04-kahlo/Products#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.0",
+    "nodemon": "^2.0.12",
+    "jest": "^27.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1"
+  }
+}
