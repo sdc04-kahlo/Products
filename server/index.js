@@ -1,11 +1,12 @@
-const dotenv = require('dotenv');
+require('dotenv').config();
+require('newrelic');
 const express = require('express');
 const morgan = require('morgan');
 const { Client } = require('pg');
 
-dotenv.config();
 const app = express();
 app.use(morgan('dev'));
+app.use(express.json());
 
 // connect to database
 const client = new Client();
@@ -16,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/products', async (req, res) => {
-  const limit = 10;
+  const limit = req.body.count || 10;
 
   const query = {
     name: 'get-products-all',
