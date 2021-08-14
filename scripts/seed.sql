@@ -25,6 +25,9 @@ COPY products (product_id, name, slogan, description, category, default_price)
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/product.csv'
   DELIMITER ',' CSV HEADER;
 
+-- index the table
+CREATE INDEX ON products (product_id);
+
 -- grant api permission to access table
 GRANT ALL ON products TO api;
 
@@ -39,6 +42,8 @@ CREATE TABLE features (
 COPY features
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/features.csv'
   DELIMITER ',' CSV HEADER;
+
+CREATE INDEX ON features (product_id);
 
 GRANT ALL ON features TO api;
 
@@ -56,6 +61,8 @@ COPY styles
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/styles.csv'
   DELIMITER ',' CSV HEADER;
 
+CREATE INDEX ON styles (product_id);
+
 GRANT ALL ON styles TO api;
 
 
@@ -70,6 +77,8 @@ COPY photos
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/photos.csv'
   DELIMITER ',' CSV HEADER;
 
+CREATE INDEX ON photos (style_id);
+
 GRANT ALL ON photos TO api;
 
 
@@ -83,6 +92,8 @@ CREATE TABLE skus (
 COPY skus
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/skus.csv'
   DELIMITER ',' CSV HEADER;
+
+CREATE INDEX ON skus (style_id);
 
 GRANT ALL ON skus TO api;
 
