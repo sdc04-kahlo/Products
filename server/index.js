@@ -17,11 +17,15 @@ app.get('/', (req, res) => {
 
 app.get('/products', async (req, res) => {
   const limit = 10;
-  const text = 'SELECT * FROM products LIMIT $1';
-  const values = [limit];
+
+  const query = {
+    name: 'get-products-all',
+    text: 'SELECT * FROM products LIMIT $1',
+    values: [limit],
+  };
 
   try {
-    const results = await client.query(text, values);
+    const results = await client.query(query);
     res.json(results.rows);
   } catch (err) {
     res.json(err);
@@ -29,19 +33,22 @@ app.get('/products', async (req, res) => {
 });
 
 app.get('/products/:product_id', async (req, res) => {
-  const text = `
-    select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price,
-      (select json_agg(feat)
-      from (
-        select feature, value from features where product_id=$1
-      ) feat
-    ) as features
-    from products p where p.product_id=$1
-  `;
-  const values = [req.params.product_id];
+  const query = {
+    name: 'get-product-single',
+    text: `
+      select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price,
+        (select json_agg(feat)
+        from (
+          select feature, value from features where product_id=$1
+        ) feat
+      ) as features
+      from products p where p.product_id=$1
+    `,
+    values: [req.params.product_id],
+  };
 
   try {
-    const results = await client.query(text, values);
+    const results = await client.query(query);
     res.json(results.rows);
   } catch (err) {
     res.json(err);
