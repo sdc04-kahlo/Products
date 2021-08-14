@@ -30,12 +30,16 @@ app.get('/products', async (req, res) => {
 
 app.get('/products/:product_id', async (req, res) => {
   const text = `
-    SELECT p.product_id, p.name, f.feature, f.value
-    FROM products p INNER JOIN features f
-    ON f.product_id = p.product_id
-    WHERE p.product_id=$1;
+    select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price,
+      (select json_agg(feat)
+      from (
+        select feature, value from features where product_id=$1
+      ) feat
+    ) as features
+    from products p where p.product_id=$1
   `;
   const values = [req.params.product_id];
+
   try {
     const results = await client.query(text, values);
     res.json(results.rows);
