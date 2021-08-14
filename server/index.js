@@ -56,12 +56,50 @@ app.get('/products/:product_id', async (req, res) => {
   }
 });
 
-app.get('/products/:product_id/styles', (req, res) => {
-  res.json(req.params);
+app.get('/products/:product_id/styles', async (req, res) => {
+  const query = {
+    name: 'get-styles',
+    text: `
+      select s.product_id,
+        (select json_agg(sty)
+        from (
+          select style_id, name, original_price, sale_price, default_style,
+            (select json_agg(pho) from (
+              select thumbnail_url, url from photos where style_id=1
+            ) pho
+          ) as photos
+          from styles where product_id=$1
+        ) sty
+      ) as results
+      from styles s where s.product_id=$1
+    `,
+    values: [req.params.product_id],
+  };
+
+  try {
+    const results = await client.query(query);
+    res.json(results.rows);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
-app.get('/products/:product_id/related', (req, res) => {
-  res.json(req.params);
+app.get('/products/:product_id/related', async (req, res) => {
+  const query = {
+    name: 'get-related',
+    text: `
+      select array_agg(related_product_id)
+        from related where current_product_id=$1
+    `,
+    values: [req.params.product_id],
+  };
+
+  try {
+    const results = await client.query(query);
+    res.json(results.rows[0].array_agg);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 app.listen(process.env.PORT, () => {
