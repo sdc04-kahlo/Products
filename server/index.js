@@ -15,14 +15,20 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.get('/products', (req, res) => {
-  client
-    .query('SELECT * FROM products LIMIT 5')
-    .then((results) => res.json(results.rows))
-    .catch((e) => console.log(e));
+app.get('/products', async (req, res) => {
+  const limit = 10;
+  const text = 'SELECT * FROM products LIMIT $1';
+  const values = [limit];
+
+  try {
+    const results = await client.query(text, values);
+    res.json(results.rows);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
-app.get('/products/:product_id', (req, res) => {
+app.get('/products/:product_id', async (req, res) => {
   const text = `
     SELECT p.product_id, p.name, f.feature, f.value
     FROM products p INNER JOIN features f
@@ -30,10 +36,12 @@ app.get('/products/:product_id', (req, res) => {
     WHERE p.product_id=$1;
   `;
   const values = [req.params.product_id];
-  client
-    .query(text, values)
-    .then((results) => res.json(results.rows))
-    .catch((e) => console.log(e));
+  try {
+    const results = await client.query(text, values);
+    res.json(results.rows);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 app.get('/products/:product_id/styles', (req, res) => {
