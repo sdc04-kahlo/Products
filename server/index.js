@@ -2,15 +2,15 @@ require('dotenv').config();
 require('newrelic');
 const express = require('express');
 const morgan = require('morgan');
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
 // connect to database
-const client = new Client();
-client
+const db = new Pool();
+db
   .connect()
   .then(() => console.log('connected to database'))
   .catch((err) => console.log(err));
@@ -29,7 +29,7 @@ app.get('/products', async (req, res) => {
   };
 
   try {
-    const results = await client.query(query);
+    const results = await db.query(query);
     res.json(results.rows);
   } catch (err) {
     res.json(err);
@@ -52,7 +52,7 @@ app.get('/products/:product_id', async (req, res) => {
   };
 
   try {
-    const results = await client.query(query);
+    const results = await db.query(query);
     res.json(results.rows);
   } catch (err) {
     res.json(err);
@@ -84,7 +84,7 @@ app.get('/products/:product_id/styles', async (req, res) => {
   };
 
   try {
-    const results = await client.query(query);
+    const results = await db.query(query);
     res.json(results.rows[0]);
   } catch (err) {
     res.json(err);
@@ -102,7 +102,7 @@ app.get('/products/:product_id/related', async (req, res) => {
   };
 
   try {
-    const results = await client.query(query);
+    const results = await db.query(query);
     res.json(results.rows[0].array_agg);
   } catch (err) {
     res.json(err);
