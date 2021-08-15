@@ -10,7 +10,10 @@ app.use(express.json());
 
 // connect to database
 const client = new Client();
-client.connect();
+client
+  .connect()
+  .then(() => console.log('connected to database'))
+  .catch((err) => console.log(err));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -78,7 +81,7 @@ app.get('/products/:product_id/styles', async (req, res) => {
 
   try {
     const results = await client.query(query);
-    res.json(results.rows);
+    res.json(results.rows[0]);
   } catch (err) {
     res.json(err);
   }
