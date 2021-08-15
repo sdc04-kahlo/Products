@@ -8,8 +8,8 @@ export const options = {
 
 export default function () {
   const product_id = Math.round(Math.random() * 100000 + 900000);
-  // http.get(`http://localhost:3000/products/${product_id}/styles`);
-  http.get(`http://localhost:3000/products/${product_id}`);
+  http.get(`http://localhost:3000/products/${product_id}/styles`);
+  // http.get(`http://localhost:3000/products/${product_id}`);
   // http.get(`http://localhost:3000/products/`);
   sleep(1);
 }

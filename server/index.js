@@ -69,8 +69,12 @@ app.get('/products/:product_id/styles', async (req, res) => {
           select style_id, name, original_price, sale_price, default_style,
             (select json_agg(pho) from (
               select thumbnail_url, url from photos where style_id=1
-            ) pho
-          ) as photos
+              ) pho
+            ) as photos,
+            (select json_agg(sk) from (
+              select quantity, size from skus where style_id=1
+              ) sk
+            ) as skus
           from styles where product_id=$1
         ) sty
       ) as results
