@@ -15,8 +15,8 @@ db
   .then(() => console.log('connected to database'))
   .catch((err) => console.log(err));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get(`/${process.env.LOADERIO_KEY}`, (req, res) => {
+  res.send(process.env.LOADERIO_KEY);
 });
 
 app.get('/products', async (req, res) => {
