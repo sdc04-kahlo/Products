@@ -22,12 +22,13 @@ app.get(`/${process.env.LOADERIO_KEY}`, (req, res) => {
 app.get('/products', async (req, res) => {
   const limit = req.body.count || 10;
   const page = req.body.page || 1;
-  const offset = limit * (page - 1);
+  const low = (page - 1) * limit + 1;
+  const high = page * limit;
 
   const query = {
     name: 'get-products-all',
-    text: 'SELECT * FROM products LIMIT $1 OFFSET $2',
-    values: [limit, offset],
+    text: 'SELECT * FROM products WHERE product_id BETWEEN $1 and $2',
+    values: [low, high],
   };
 
   try {
