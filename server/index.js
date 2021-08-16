@@ -21,11 +21,13 @@ app.get(`/${process.env.LOADERIO_KEY}`, (req, res) => {
 
 app.get('/products', async (req, res) => {
   const limit = req.body.count || 10;
+  const page = req.body.page || 1;
+  const offset = limit * (page - 1);
 
   const query = {
     name: 'get-products-all',
-    text: 'SELECT * FROM products LIMIT $1',
-    values: [limit],
+    text: 'SELECT * FROM products LIMIT $1 OFFSET $2',
+    values: [limit, offset],
   };
 
   try {
