@@ -17,7 +17,9 @@ CREATE TABLE products (
   slogan TEXT,
   description TEXT,
   category TEXT,
-  default_price TEXT
+  default_price TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- load from CSV extract

@@ -15,7 +15,8 @@ db
   .then(() => console.log('connected to database'))
   .catch((err) => console.log(err));
 
-app.get(`/${process.env.LOADERIO_KEY}`, (req, res) => {
+// verify loader io
+app.get(`/${process.env.LOADERIO_KEY}.txt`, (req, res) => {
   res.send(process.env.LOADERIO_KEY);
 });
 
@@ -43,7 +44,7 @@ app.get('/products/:product_id', async (req, res) => {
   const query = {
     name: 'get-product-single',
     text: `
-      select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price,
+      select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price, p.created_at, p.updated_at
         (select json_agg(feat)
         from (
           select feature, value from features where product_id=$1
