@@ -21,6 +21,7 @@ app.get(`/${process.env.LOADERIO_KEY}.txt`, (req, res) => {
 });
 
 app.get('/products', async (req, res) => {
+  // calculate range of products based on specified page
   const limit = req.body.count || 10;
   const page = req.body.page || 1;
   const low = (page - 1) * limit + 1;
@@ -28,7 +29,11 @@ app.get('/products', async (req, res) => {
 
   const query = {
     name: 'get-products-all',
-    text: 'SELECT * FROM products WHERE product_id BETWEEN $1 and $2',
+    text: `
+      SELECT p.product_id as id, 'hr-rfp' as campus, p.name, p.slogan, p.description, p.category, p.default_price, p.created_at, p.updated_at
+      FROM products p
+      WHERE product_id BETWEEN $1 and $2
+    `,
     values: [low, high],
   };
 
@@ -44,7 +49,7 @@ app.get('/products/:product_id', async (req, res) => {
   const query = {
     name: 'get-product-single',
     text: `
-      select p.product_id, p.name, p.slogan, p.description, p.category, p.default_price, p.created_at, p.updated_at
+      select p.product_id as id, 'hr-rfp' as campus, p.name, p.slogan, p.description, p.category, p.default_price, p.created_at, p.updated_at,
         (select json_agg(feat)
         from (
           select feature, value from features where product_id=$1
@@ -57,7 +62,7 @@ app.get('/products/:product_id', async (req, res) => {
 
   try {
     const results = await db.query(query);
-    res.json(results.rows);
+    res.json(results.rows[0]);
   } catch (err) {
     res.json(err);
   }
@@ -70,7 +75,7 @@ app.get('/products/:product_id/styles', async (req, res) => {
       select s.product_id,
         (select json_agg(sty)
         from (
-          select style_id, name, original_price, sale_price, default_style,
+          select style_id, name, original_price, sale_price, default_style as "default?",
             (select json_agg(pho) from (
               select thumbnail_url, url from photos where style_id=1
               ) pho
