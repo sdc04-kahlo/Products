@@ -1,60 +1,96 @@
 # Atelier Products API
 
-This project is a scalable database server of product information to interface with the front end of a growing online retail portal.
+This project is a scalable API server of product information to interface with the [front end](https://github.com/RFP54-Helios/FEC/blob/main/README.md) of a growing online retail portal.
 
 ## Contributing
 
-PRs welcome! Please read the [contributing docs](CONTRIBUTING.md) before starting any work.
+Please read the [contributing docs](CONTRIBUTING.md) before starting any work.
 
-## Set up instructions
+## Tech Stack
 
-### Database set up
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg"></code>
 
-1. ensure [Postgres](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-database#install-postgresql) is installed and running
+### Node.js
+
+- Non-blocking, event-driven server
+
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg"></code>
+
+### Express
+
+- Route HTTP requests to respond with database query results
+
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg"></code>
+
+### PostgreSQL
+
+- Fast database reads at web-scale
+
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/nginx/nginx-ar21.svg"></code>
+
+### NGINX
+
+- Load balance between many routers
+
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg"></code>
+
+### AWS Elastic Cloud Compute
+
+- Quickly deploy many instances from an image to manage high volumes of traffic
+
+<code><img width="15%" src="https://www.vectorlogo.zone/logos/newrelic/newrelic-ar21.svg"></code>
+
+### New Relic APM
+
+- Monitor performance while stress testing to identify optimization opportunities
+
+---
+
+## Deployment Instructions
+
+### Database
+
+1. Launch an Ubuntu 20.04 LTS [EC2 instance](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html)
+1. Add an inbound security rule to allow traffic on TCP port 5432 from anywhere
+1. Install [Postgres](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
 
     ```bash
-    sudo service postgresql start
+    sudo apt-get update && sudo apt-get -y upgrade
+    sudo apt-get install postgresql postgresql-contrib​
     ```
 
-1. build and load the database from the files in `csv-extracts/` (ignored by git)
+1. Transfer the `csv-full` folder to that instance
 
     ```bash
-    # WARNING: this will erase an data stored in the database
-    npm run seed
+    scp -i secret_key.pem -r csv-full ubuntu@0.0.0.0:~/
     ```
 
-1. use the CLI view to confirm success
+1. Seed the database by running the [seed script](scripts/seed.sql)
 
-    ```
-    $ sudo -u postgres psql
-
-    postgres=# \c atelierproducts
-
-    atelierproducts=# \dt+
-                            List of relations
-    Schema |   Name   | Type  |  Owner   |    Size    | Description
-    --------+----------+-------+----------+------------+-------------
-    public | features | table | postgres | 129 MB     |
-    public | photos   | table | postgres | 8192 bytes |
-    public | products | table | postgres | 8192 bytes |
-    public | related  | table | postgres | 190 MB     |
-    public | skus     | table | postgres | 8192 bytes |
-    public | styles   | table | postgres | 104 MB     |
-    (6 rows)
-
-    atelierproducts=# select * from styles limit 5;
-    id | product_id |         name         | sale_price | original_price | default_style
-    ----+------------+----------------------+------------+----------------+---------------
-      1 |          1 | Forest Green & Black | null       | 140            | t
-      2 |          1 | Desert Brown & Tan   | null       | 140            | f
-      3 |          1 | Ocean Blue & Grey    | 100        | 140            | f
-      4 |          1 | Digital Red & Black  | null       | 140            | f
-      5 |          1 | Sky Blue & White     | 100        | 140            | f
-    (5 rows)
+    ```bash
+    sudo -u postgres psql < csv-full/seed.sql
     ```
 
-1. log out of the CLI
+1. Modify the config file `pg_hba.conf`
 
+    ```bash
+    sudo vim /etc/postgresql/12/main/pg_hba.conf
+
+    # add this line near bottom (allows remote access)
+    host    all             all             0.0.0.0/0               md5
     ```
-    atelierproducts=# \q
+
+1. Modify the config file `postgresql.conf`
+
+    ```bash
+    sudo vim /etc/postgresql/12/main/postgresql.conf
+
+    # Change line 59 to listen to external requests:
+    listen_address='*'
+    ```
+
+1. Restart Postgres
+
+    ```bash
+    sudo service postgresql restart
     ```
