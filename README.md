@@ -1,6 +1,6 @@
 # Atelier Products API
 
-This project is a scalable API server of product information to interface with the [front end](https://github.com/RFP54-Helios/FEC/blob/main/README.md) of a growing online retail portal.
+This project is a scalable API server of product information to interface with the [front end](https://github.com/RFP54-Helios/FEC) of a growing online retail portal.
 
 ## Contributing
 
