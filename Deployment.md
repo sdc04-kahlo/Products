@@ -167,7 +167,7 @@ Starting up a single Express server
 Once you have a single Express server running, you can create an image of that server for spinning up additional Express servers that can be load balanced using NGINX.
 
 1. Create an [Amazon Machine Image](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/tkv-create-ami-from-instance.html) of your Express server
-1. Launch multiple new instances from your new custom AMI
+1. Launch multiple new instances [from your new custom AMI](https://aws.amazon.com/premiumsupport/knowledge-center/launch-instance-custom-ami/)
     - A single database instance should be able to handle at least 10 connected Express servers
 1. Connect to each server over SSH and start up Express
     - Leave a dedicated terminal open for each server
@@ -181,9 +181,9 @@ Once you have a single Express server running, you can create an image of that s
 1. Add the IP address of each server to the NGINX config file (see [NGINX](#nginx-server) step 3)
 
     ```bash
-    upstream products-api {
-      server 0.0.0.0;
-      server 0.0.0.0;
-      server 0.0.0.0;
-    }
+      upstream products-api {
+        server 0.0.0.0;
+        server 0.0.0.0;
+        server 0.0.0.0;
+      }
     ```
