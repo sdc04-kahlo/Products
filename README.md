@@ -46,6 +46,10 @@ Please read the [contributing docs](CONTRIBUTING.md) before starting any work.
 
 ---
 
+## System Architecture
+
+![System Architecture](img/architecture.png)
+
 ## Deployment Instructions
 
 See [Deployment Instructions](Deployment.md) to launch this service on AWS.
