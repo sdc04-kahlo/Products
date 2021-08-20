@@ -5,10 +5,17 @@ How to launch this service on AWS EC2
 ## Launching an EC2 instance
 
 1. Use [Amazon's official docs](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-1-launch-instance.html) to launch an Ubuntu 20.04 LTS EC2 instance
+    - In step 4 change ' Amazon Machine Image (AMI)' -> Ubuntu 20.04 LTS
+    - In step 7 if you already have a key pair, select to reuse that same key pair. Else download a new key pair in this project directory and modify the permissions on it in bash.
+    - Take care to never commit this file to git, all `.pem` files are git ignored in this repository
+
+      ```bash
+      chmod 400 secret_key.pem
+      ```
+
 1. Connect via ssh in bash (replace 0.0.0.0 with the IP address of your instance)
 
     ```bash
-    chmod 400 secret_key.pem
     ssh -i secret_key.pem ubuntu@0.0.0.0
     ```
 
