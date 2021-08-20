@@ -13,12 +13,11 @@ How to launch this service on AWS EC2
       chmod 400 secret_key.pem
       ```
 
-1. Connect via ssh in bash (replace 0.0.0.0 with the IP address of your instance)
+1. Connect to this instance via ssh in bash (replace 0.0.0.0 with the IP address of your instance)
 
     ```bash
     ssh -i secret_key.pem ubuntu@0.0.0.0
     ```
-
 
 ## Database Server
 
@@ -70,12 +69,13 @@ How to launch this service on AWS EC2
 
 ## Node Express Server
 
+Starting up a single Express server
+
 1. Launch and connect to a new [EC2 instance](#launching-an-ec2-instance)
 1. Add an [inbound security rule](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/authorizing-access-to-an-instance.html) to allow traffic on TCP port 80 (HTTP) from anywhere
 1. Connect via ssh in bash (replace 0.0.0.0 with the IP address of your instance)
 
     ```bash
-    chmod 400 secret_key.pem
     ssh -i secret_key.pem ubuntu@0.0.0.0
     ```
 
@@ -116,4 +116,74 @@ How to launch this service on AWS EC2
 
     ```bash
     npm run start:prod
+    ```
+
+## NGINX Server
+
+1. Launch and connect to a new [EC2 instance](#launching-an-ec2-instance)
+1. Install [NGINX](https://nginx.org/en/linux_packages.html#Ubuntu)
+1. Paste the below section into the `nginx.conf` file
+    - Replace 0.0.0.0 with the IP address of your Express server
+    - [Docs here](https://nginx.org/en/docs/http/load_balancing.html)
+
+    ```bash
+    $ sudo vim /etc/nginx/nginx.conf
+
+    # nginx.conf
+    user  nginx;
+    worker_processes  auto;
+
+    error_log  /var/log/nginx/error.log notice;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+        worker_connections  1024;
+    }
+
+    http {
+        upstream products-api {
+            server 0.0.0.0;
+        }
+
+        server {
+            listen 80;
+
+            location / {
+                proxy_pass http://products-api;
+            }
+        }
+    }
+    ```
+
+1. Reload the NGINX service
+
+    ```bash
+     sudo nginx -s reload
+    ```
+
+## Horizontally Scaling with Many Express Servers
+
+Once you have a single Express server running, you can create an image of that server for spinning up additional Express servers that can be load balanced using NGINX.
+
+1. Create an [Amazon Machine Image](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/tkv-create-ami-from-instance.html) of your Express server
+1. Launch multiple new instances from your new custom AMI
+    - A single database instance should be able to handle at least 10 connected Express servers
+1. Connect to each server over SSH and start up Express
+    - Leave a dedicated terminal open for each server
+
+    ```bash
+    ssh -i secret_key.pem ubuntu@0.0.0.0
+    cd Products
+    npm run start:prod
+    ```
+
+1. Add the IP address of each server to the NGINX config file (see [NGINX](#nginx-server) step 3)
+
+    ```bash
+    upstream products-api {
+      server 0.0.0.0;
+      server 0.0.0.0;
+      server 0.0.0.0;
+    }
     ```
