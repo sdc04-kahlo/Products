@@ -1,10 +1,14 @@
 # Atelier Products API
 
-This project is a scalable API server of product information to interface with the [front end](https://github.com/RFP54-Helios/FEC) of a growing online retail portal.
+Scalable service that provides product information interfacing with the [front end](https://github.com/RFP54-Helios/FEC) of a growing online retail portal.
 
-## Contributing
+## Contents
 
-Please read the [contributing docs](CONTRIBUTING.md) before starting any work.
+- [Contributing](CONTRIBUTING.md)
+- [Using the API](docs/API-usage.md)
+- [Deploying to AWS](docs/Deployment.md)
+- [Tech Stack](#tech-stack)
+- [System Architecture](#system-architecture)
 
 ## Tech Stack
 
@@ -48,8 +52,4 @@ Please read the [contributing docs](CONTRIBUTING.md) before starting any work.
 
 ## System Architecture
 
-![System Architecture](img/architecture.png)
-
-## Deployment Instructions
-
-See [Deployment Instructions](Deployment.md) to launch this service on AWS.
+![System Architecture](docs/img/architecture.png)
