@@ -1,6 +1,6 @@
 # Atelier Products API
 
-Scalable service that provides product information interfacing with the [front end](https://github.com/RFP54-Helios/FEC) of a growing online retail portal.
+Lightweight, scalable microservice serving a growing [ecommerce front-end](https://github.com/RFP54-Helios/FEC)
 
 ## Contents
 
@@ -10,46 +10,28 @@ Scalable service that provides product information interfacing with the [front e
 - [Tech Stack](#tech-stack)
 - [System Architecture](#system-architecture)
 
-## Tech Stack
+---
+
+### Tech Stack
 
 ![node](https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg)
 
-### Node.js
-
-- Non-blocking, event-driven server
+- Node.js provides an asynchronous event-driven runtime environment for building scalable network applications
 
 ![express](https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg)
 
-### Express
-
-- Route HTTP requests to respond with database query results
+- Express was chosen for it's minimal interface and flexible HTTP routing methods
 
 ![postgres](https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg)
 
-### PostgreSQL
-
-- Fast database reads at web-scale
+- PostreSQL is used here as a robust and stable open source database
 
 ![nginx](https://www.vectorlogo.zone/logos/nginx/nginx-ar21.svg)
 
-### NGINX
-
-- Load balance between many routers
-
-![aws](https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg)
-
-### AWS Elastic Cloud Compute
-
-- Quickly deploy many instances from an image to manage high volumes of traffic
-
-![new relic](https://www.vectorlogo.zone/logos/newrelic/newrelic-ar21.svg)
-
-### New Relic APM
-
-- Monitor performance while stress testing to identify optimization opportunities
+- NGINX enables load balancing HTTP traffic between between many routers
 
 ---
 
-## System Architecture
+### System Architecture
 
 ![System Architecture](docs/img/architecture.png)

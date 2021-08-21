@@ -1,6 +1,8 @@
 # Deployment Instructions
 
-How to launch this service on AWS EC2
+AWS Elastic Compute Cloud (EC2) enables quick deployment to manage high volumes of traffic
+
+![aws](https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg)
 
 ## Launching an EC2 instance
 
@@ -18,6 +20,10 @@ How to launch this service on AWS EC2
     ```bash
     ssh -i secret_key.pem ubuntu@0.0.0.0
     ```
+
+---
+
+![postgres](https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg)
 
 ## Database Server
 
@@ -66,6 +72,10 @@ How to launch this service on AWS EC2
     ```bash
     sudo service postgresql restart
     ```
+
+---
+
+![express](https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg)
 
 ## Node Express Server
 
@@ -118,7 +128,11 @@ Starting up a single Express server
     npm run start:prod
     ```
 
-## NGINX Server
+---
+
+![nginx](https://www.vectorlogo.zone/logos/nginx/nginx-ar21.svg)
+
+## NGINX Load Balancing Server
 
 1. Launch and connect to a new [EC2 instance](#launching-an-ec2-instance)
 1. Install [NGINX](https://nginx.org/en/linux_packages.html#Ubuntu)
@@ -161,6 +175,10 @@ Starting up a single Express server
     ```bash
      sudo nginx -s reload
     ```
+
+---
+
+![System Architecture](img/architecture.png)
 
 ## Horizontally Scaling with Many Express Servers
 

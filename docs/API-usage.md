@@ -81,7 +81,7 @@ Returns all product level information for a specified product id.
 
 ## Product Styles
 
-Returns the all styles available for the given product.
+Returns all styles available for the given product.
 
 `GET /products/:product_id/styles`
 
