@@ -17,7 +17,9 @@ CREATE TABLE products (
   slogan TEXT,
   description TEXT,
   category TEXT,
-  default_price TEXT
+  default_price TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- load from CSV extract
@@ -99,7 +101,7 @@ GRANT ALL ON skus TO api;
 
 
 CREATE TABLE related (
-  realted_id SERIAL PRIMARY KEY,
+  related_id SERIAL PRIMARY KEY,
   current_product_id INT,
   related_product_id INT
 );
@@ -108,5 +110,6 @@ COPY related
   FROM '/home/mc_heindel/HackReactor/Products/csv-full/related.csv'
   DELIMITER ',' CSV HEADER;
 
-GRANT ALL ON related TO api;
+CREATE INDEX ON related (current_product_id);
 
+GRANT ALL ON related TO api;
